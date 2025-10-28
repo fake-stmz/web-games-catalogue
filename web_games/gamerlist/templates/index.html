@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}GamerList - Список игр{% endblock %}
+
+{% block search %}
+    <form class="d-flex" role="search" method="get">
+        <input class="form-control me-2" type="search" placeholder="Поиск" name="search" {% if request.GET.search %}value="{{ request.GET.search }}"{% endif %}/>
+        <button class="btn btn-outline-success" type="submit">Найти</button>
+    </form>
+{% endblock %}
+
+{% block content %}
+    <div class="container text-center">
+        <h1 class="my-4">Список игр</h1>
+        <div class="btn-group my-3" role="group">
+            <a href="/" type="button" class="btn {% if not request.GET.category %}btn-secondary{% else %}btn-outline-secondary{% endif %}">Все</a>
+            {% for category in categories %}
+            <a href="?category={{ category.id }}" class="btn {% if request.GET.category == category.id|slugify %}btn-secondary{% else %}btn-outline-secondary{% endif %}">{{ category.name }}</a>
+            {% endfor %}
+        </div>
+        <div class="row row-cols-3">
+                {% for game in games %}
+                <div class="col">
+                    <div class="card m-2">
+                        <img src="{{ game.image }}" class="card-img-top" alt="{{ game.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ game.name }}</h5>
+                            <p class="card-text">{{ game.description }}</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Год релиза: {{ game.release_year }} г.</li>
+                            <li class="list-group-item">Категории: {% for category in game.categories.all %}
+                                {{ category.name }}{% if category.name != game.categories.last.name %}, {% endif %}
+                                {% endfor %}</li>
+                        </ul>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+{% endblock %}

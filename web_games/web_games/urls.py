@@ -21,6 +21,8 @@ from gamerlist import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name="index"),
-    path('category/<int:category_id>/', views.category_filter, name="category_filter"),
-    path('search/', views.search, name="search")
+    path('profile/', views.profile, name="profile"),
+    path('register/', views.register, name="register"),
+    path('login/', views.login, name="login"),
+    path('logout/', views.logout, name="logout"),
 ]
