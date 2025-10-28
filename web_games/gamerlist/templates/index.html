@@ -25,7 +25,11 @@
                         <img src="{{ game.image }}" class="card-img-top" alt="{{ game.name }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ game.name }}</h5>
+                            {% if user.is_authenticated %}
                             <p class="card-text">{{ game.description }}</p>
+                            {% else %}
+                            <p class="card-text">Описание доступно только для зарегистрированных пользователей.</p>
+                            {% endif %}
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Год релиза: {{ game.release_year }} г.</li>

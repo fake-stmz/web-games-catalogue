@@ -20,7 +20,7 @@ def index(request):
     return render(request, 'index.html', {'games': games, 'categories': categories})
 
 def profile(request):
-    pass
+    return render(request, 'profile.html')
 
 def register_page(request):
     
