@@ -8,16 +8,21 @@ def index(request):
     
     games = Game.objects.prefetch_related('categories').all()
     categories = Category.objects.all()
-
-    if request.method == 'GET' and 'search' in request.GET:
-        search_query = request.GET.get('search', '')
+    years = Game.objects.values_list('release_year', flat=True).distinct().order_by('release_year')
+    
+    search_query = request.GET.get('search', '')
+    if search_query:
         games = games.filter(name__icontains=search_query)
 
-    if request.method == 'GET' and 'category' in request.GET:
-        category_id = request.GET.get('category', '')
-        games = games.filter(categories__id=category_id)
+    category_filter = request.GET.get('category', '')
+    if category_filter:
+        games = games.filter(categories__id=category_filter)
 
-    return render(request, 'index.html', {'games': games, 'categories': categories})
+    year_filter = request.GET.get('year', '')
+    if year_filter:
+        games = games.filter(release_year=year_filter)
+
+    return render(request, 'index.html', {'games': games, 'categories': categories, 'years': years})
 
 def profile(request):
     return render(request, 'profile.html')

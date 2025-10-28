@@ -5,6 +5,12 @@
 {% block search %}
     <form class="d-flex flex-grow-1 mx-4" role="search" method="get">
         <input class="form-control me-2" type="search" placeholder="Поиск" name="search" {% if request.GET.search %}value="{{ request.GET.search }}"{% endif %}/>
+        {% if request.GET.category %}
+            <input type="hidden" name="category" value="{{ request.GET.category }}">
+        {% endif %}
+        {% if request.GET.year %}
+            <input type="hidden" name="year" value="{{ request.GET.year }}">
+        {% endif %}
         <button class="btn btn-outline-success" type="submit">Найти</button>
     </form>
 {% endblock %}
@@ -13,11 +19,28 @@
     <div class="container text-center">
         <h1 class="my-4">Список игр</h1>
         <div class="btn-group my-3" role="group">
-            <a href="/" type="button" class="btn {% if not request.GET.category %}btn-secondary{% else %}btn-outline-secondary{% endif %}">Все</a>
+            <a href="?{% if request.GET.search %}search={{ request.GET.search }}{% if request.GET.year %}&year={{ request.GET.year }}{% endif %}{% elif request.GET.year %}year={{ request.GET.year }}{% endif %}" type="button" class="btn {% if not request.GET.category %}btn-secondary{% else %}btn-outline-secondary{% endif %}">Все</a>
             {% for category in categories %}
-            <a href="?category={{ category.id }}" class="btn {% if request.GET.category == category.id|slugify %}btn-secondary{% else %}btn-outline-secondary{% endif %}">{{ category.name }}</a>
+            <a href="?category={{ category.id }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.year %}&year={{ request.GET.year }}{% endif %}" class="btn {% if request.GET.category == category.id|slugify %}btn-secondary{% else %}btn-outline-secondary{% endif %}">{{ category.name }}</a>
             {% endfor %}
         </div>
+        <div class="mb-4">
+            <form class="d-flex justify-content-center" method="get">
+                {% if request.GET.search %}
+                    <input type="hidden" name="search" value="{{ request.GET.search }}">
+                {% endif %}
+                {% if request.GET.category %}
+                    <input type="hidden" name="category" value="{{ request.GET.category }}">
+                {% endif %}
+                <label for="year" class="me-2 align-self-center">Фильтр по году релиза:</label>
+                <select class="form-select w-auto me-2" id="year" name="year">
+                    <option value="" {% if not request.GET.year %}selected{% endif %}>Все годы</option>
+                    {% for year in years %}
+                    <option value="{{ year }}" {% if request.GET.year == year|slugify %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                </select>
+                <button class="btn btn-outline-primary" type="submit">Применить</button>
+            </form>
         <div class="row row-cols-3">
                 {% for game in games %}
                 <div class="col">
