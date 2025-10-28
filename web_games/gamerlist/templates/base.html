@@ -9,12 +9,14 @@
 <body>
     <header>
         <nav class="navbar sticky-top bg-body-tertiary">
-            <div class="container-fluid">
+            <div class="container-fluid d-flex justify-content-between">
                 <a class="navbar-brand" href="/">GamerList</a>
                 {% block search %}{% endblock %}
                 {% if user.is_authenticated %}
+                <div>
                     <a href="{% url 'profile' %}" class="btn btn-outline-success">Профиль</a>
                     <a href="{% url 'logout' %}" class="btn btn-outline-danger">Выйти</a>
+                </div>
                 {% else %}
                     <a href="{% url 'login' %}" class="btn btn-outline-success">Войти</a>
                 {% endif %}

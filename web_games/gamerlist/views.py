@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Game, Category
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 
 # Create your views here.
 def index(request):
+    
     games = Game.objects.prefetch_related('categories').all()
     categories = Category.objects.all()
 
@@ -19,11 +22,40 @@ def index(request):
 def profile(request):
     pass
 
-def register(request):
-    pass
+def register_page(request):
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
 
-def login(request):
-    pass
+        if password == confirm_password:
+            user = User.objects.create_user(username=username, email=email, password=password)
+            login(request, user)
+            return redirect('index')
+        else:
+            return render(request, 'register.html', {'error': 'Пароли не совпадают.'})
+        
+    return render(request, 'register.html')
 
-def logout(request):
-    pass
+def login_page(request):
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('index')
+        else:
+            return render(request, 'login.html', {'error': 'Неверное имя пользователя или пароль.'})
+
+    return render(request, 'login.html')
+
+def logout_page(request):
+    
+    logout(request)
+    
+    return redirect('index')

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}GamerList - Вход{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card mt-4 p-4" style="max-width: 400px; margin: auto;">
+            <h1 class="text-center mb-4">Вход</h1>
+            {% if error %}
+            <div class="alert alert-danger mt-3" role="alert">
+                {{ error }}
+            </div>
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="username" class="form-label">Имя пользователя</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Пароль</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mt-3">Войти</button>
+                <div class="text-center mt-3">
+                    <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйтесь</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

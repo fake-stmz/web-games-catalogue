@@ -3,7 +3,7 @@
 {% block title %}GamerList - Список игр{% endblock %}
 
 {% block search %}
-    <form class="d-flex" role="search" method="get">
+    <form class="d-flex flex-grow-1 mx-4" role="search" method="get">
         <input class="form-control me-2" type="search" placeholder="Поиск" name="search" {% if request.GET.search %}value="{{ request.GET.search }}"{% endif %}/>
         <button class="btn btn-outline-success" type="submit">Найти</button>
     </form>
