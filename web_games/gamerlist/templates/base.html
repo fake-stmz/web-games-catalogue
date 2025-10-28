@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}GamerList - Список игр{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar sticky-top bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">GamerList</a>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Поиск" name="search"/>
+                    <button class="btn btn-outline-success" type="submit">Найти</button>
+                </form>
+                <button class="btn btn-outline-success" type="button">Войти</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container text-center">
+            <div class="row row-cols-3">
+                {% for game in games %}
+                <div class="col">
+                    <div class="card m-2">
+                        <img src="{{ game.image }}" class="card-img-top" alt="{{ game.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ game.name }}</h5>
+                            <p class="card-text">{{ game.description }}</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Год релиза: {{ game.release_year }} г.</li>
+                            <li class="list-group-item">Категории: {% for category in game.categories.all %}
+                                {{ category.name }}{% if category.name != game.categories.last.name %}, {% endif %}
+                                {% endfor %}</li>
+                        </ul>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+</body>
+</html>
