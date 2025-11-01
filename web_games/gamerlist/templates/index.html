@@ -83,7 +83,9 @@
                         </ul>
 
                         <!-- Кнопка добавление в избранное (локальный js) -->
+                        {% if user.is_authenticated %}
                         <button class="btn btn-outline-primary m-2" id="favourite-{{ game.id }}" onclick="toggle_favourite({{ game.id }})"><i class="bi bi-star"></i> Добавить в избранное</button>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
