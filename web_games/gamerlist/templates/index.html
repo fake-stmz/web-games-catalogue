@@ -60,9 +60,25 @@
                                 {{ category.name }}{% if category.name != game.categories.last.name %}, {% endif %}
                                 {% endfor %}</li>
                         </ul>
+                        <button class="btn btn-outline-primary m-2" id="favourite-{{ game.id }}" onclick="toggle_favourite({{ game.id }})"><i class="bi bi-star"></i> Добавить в избранное</button>
                     </div>
                 </div>
                 {% endfor %}
             </div>
         </div>
+    </div>
+    <script type="text/javascript">
+        function toggle_favourite(id) {
+            const button = document.getElementById(`favourite-${id}`);
+            if (button.innerHTML == '<i class="bi bi-star"></i> Добавить в избранное') {
+                button.innerHTML = '<i class="bi bi-star-fill"></i> Удалить из избранного';
+                button.classList.remove('btn-outline-primary');
+                button.classList.add('btn-outline-warning');
+            } else {
+                button.innerHTML = '<i class="bi bi-star"></i> Добавить в избранное';
+                button.classList.remove('btn-outline-warning');
+                button.classList.add('btn-outline-primary');
+            }
+        }
+    </script>
 {% endblock %}
